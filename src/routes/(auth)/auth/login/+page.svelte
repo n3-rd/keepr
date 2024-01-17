@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SignedOut } from 'sveltefire';
+	import { SignedIn, SignedOut } from 'sveltefire';
 	import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 	import * as Card from '$lib/components/ui/card';
 	import { Input } from '$lib/components/ui/input';
@@ -8,6 +8,7 @@
 	import { goto } from '$app/navigation';
 	import { failure, success } from '@/helpers/Toast';
 	import { getFirebaseErrorMessage } from '@/helpers/FirebaseErrors';
+	import { browser } from '$app/environment';
 
 	let email: string = '';
 	let password: string = '';
@@ -112,4 +113,9 @@
 			</Card.Footer>
 		</Card.Root>
 	</SignedOut>
+	<SignedIn>
+		{#if browser}
+			{goto('/')}
+		{/if}
+	</SignedIn>
 </div>

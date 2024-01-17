@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { SignedOut } from 'sveltefire';
+	import { SignedOut, SignedIn } from 'sveltefire';
 	import {
 		createUserWithEmailAndPassword,
 		signInWithPopup,
@@ -12,6 +12,7 @@
 	import { goto } from '$app/navigation';
 	import { failure, success } from '@/helpers/Toast';
 	import { getFirebaseErrorMessage } from '@/helpers/FirebaseErrors';
+	import { browser } from '$app/environment';
 
 	let email: string = '';
 	let password: string = '';
@@ -116,4 +117,9 @@
 			</Card.Footer>
 		</Card.Root>
 	</SignedOut>
+	<SignedIn>
+		{#if browser}
+			{goto('/')}
+		{/if}
+	</SignedIn>
 </div>
