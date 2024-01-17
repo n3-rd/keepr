@@ -6,19 +6,29 @@
 	import { Label } from '$lib/components/ui/label';
 	import { Button } from '$lib/components/ui/button';
 	import { goto } from '$app/navigation';
-	import { failure } from '@/helpers/Toast';
+	import { failure, success } from '@/helpers/Toast';
 	import { getFirebaseErrorMessage } from '@/helpers/FirebaseErrors';
 
 	let email: string = '';
 	let password: string = '';
 </script>
 
+<svelte:head>
+	<title>Sign In</title>
+</svelte:head>
+
 <div class="flex h-screen w-screen flex-col items-center justify-center">
 	<SignedOut let:auth>
-		<Card.Root class="flex w-2/4 flex-col items-center px-8 py-4">
-			<Card.Header class="flex flex-col gap-4">
-				<Card.Title class="text-5xl font-bold">Sign In</Card.Title>
-				<Card.Description class="text-md">Sign in to your account</Card.Description>
+		<Card.Root
+			class="flex w-full flex-col items-center border-none px-8 py-4 sm:w-3/4 md:w-2/3 lg:w-1/2 xl:w-1/3 2xl:w-1/4"
+		>
+			<Card.Header class="flex flex-col gap-4 text-center">
+				<Card.Title class="text-2xl font-bold sm:text-3xl md:text-4xl lg:text-5xl"
+					>Sign In</Card.Title
+				>
+				<Card.Description class="text-sm sm:text-base md:text-lg"
+					>Sign in to your account</Card.Description
+				>
 			</Card.Header>
 			<Card.Content>
 				<form class="flex flex-col gap-8">
@@ -29,7 +39,7 @@
 								type="email"
 								placeholder="email"
 								name="email"
-								class="w-[24rem]"
+								class="w-full sm:w-[20rem] md:w-[22rem] lg:w-[24rem]"
 								bind:value={email}
 							/>
 						</div>
@@ -39,7 +49,7 @@
 								type="password"
 								placeholder="password"
 								name="password"
-								class="w-[24rem]"
+								class="w-full sm:w-[20rem] md:w-[22rem] lg:w-[24rem]"
 								bind:value={password}
 							/>
 						</div>
@@ -48,14 +58,14 @@
 					<div class="buttons flex flex-col items-center gap-4">
 						<Button
 							type="submit"
-							class="w-36"
+							class="w-full"
 							on:click={async (e) => {
 								e.preventDefault();
 								try {
 									await signInWithEmailAndPassword(auth, email, password);
+									success('Sign In Successful');
 									goto('/');
 								} catch (error) {
-									console.log(error);
 									const errorMessage = getFirebaseErrorMessage(error.code);
 									failure(errorMessage);
 								}
@@ -72,9 +82,11 @@
 								const provider = new GoogleAuthProvider();
 								try {
 									await signInWithPopup(auth, provider);
+									success('Google Sign In Successful');
 									goto('/');
 								} catch (error) {
-									console.log(error);
+									const errorMessage = getFirebaseErrorMessage(error.code);
+									failure(errorMessage);
 								}
 							}}
 						>
@@ -89,7 +101,7 @@
 					<div>Don't have an account?</div>
 					<button
 						type="button"
-						class="w-36"
+						class="text-secondary-500 w-36"
 						on:click={() => {
 							goto('/auth/register');
 						}}

@@ -1,7 +1,7 @@
 export function getFirebaseErrorMessage(errorCode: string): string {
     switch (errorCode) {
         case 'auth/invalid-email':
-            return 'Invalid email format.';
+            return 'Invalid email.';
         case 'auth/user-disabled':
             return 'This user has been disabled.';
         case 'auth/user-not-found':
