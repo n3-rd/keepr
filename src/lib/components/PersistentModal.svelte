@@ -3,8 +3,14 @@
 	export let open: boolean;
 </script>
 
-<Dialog.Root {open}>
+<Dialog.Root {open} onOutsideClick={() => event.preventDefault()} closeOnEscape={false}>
 	<Dialog.Content>
 		<slot />
 	</Dialog.Content>
 </Dialog.Root>
+
+<style>
+	:global([data-dialog-close]) {
+		display: none;
+	}
+</style>

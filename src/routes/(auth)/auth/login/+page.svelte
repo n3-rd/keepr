@@ -12,6 +12,7 @@
 
 	let email: string = '';
 	let password: string = '';
+	let loading: boolean = false;
 </script>
 
 <svelte:head>
@@ -102,7 +103,7 @@
 					<div>Don't have an account?</div>
 					<button
 						type="button"
-						class="text-secondary-500 w-36"
+						class="w-36 text-secondary-500"
 						on:click={() => {
 							goto('/auth/register');
 						}}
