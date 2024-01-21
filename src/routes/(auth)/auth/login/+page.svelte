@@ -9,6 +9,7 @@
 	import { failure, success } from '@/helpers/Toast';
 	import { getFirebaseErrorMessage } from '@/helpers/FirebaseErrors';
 	import { browser } from '$app/environment';
+	import Loader from '@/components/Loader.svelte';
 
 	let email: string = '';
 	let password: string = '';
@@ -60,19 +61,29 @@
 					<div class="buttons flex flex-col items-center gap-4">
 						<Button
 							type="submit"
-							class="w-full"
+							class="flex w-full items-center justify-center"
+							disabled={loading}
 							on:click={async (e) => {
 								e.preventDefault();
+								loading = true;
 								try {
 									await signInWithEmailAndPassword(auth, email, password);
 									success('Sign In Successful');
+									loading = false;
 									goto('/');
 								} catch (error) {
+									loading = false;
 									const errorMessage = getFirebaseErrorMessage(error.code);
 									failure(errorMessage);
 								}
-							}}>Sign In</Button
+							}}
 						>
+							{#if loading}
+								<Loader />
+							{:else}
+								Sign In
+							{/if}
+						</Button>
 
 						<div>or</div>
 

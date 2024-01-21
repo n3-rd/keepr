@@ -13,9 +13,11 @@
 	import { failure, success } from '@/helpers/Toast';
 	import { getFirebaseErrorMessage } from '@/helpers/FirebaseErrors';
 	import { browser } from '$app/environment';
+	import Loader from '@/components/Loader.svelte';
 
 	let email: string = '';
 	let password: string = '';
+	let loading: boolean = false;
 </script>
 
 <svelte:head>
@@ -66,16 +68,25 @@
 							class="w-full"
 							on:click={async (e) => {
 								e.preventDefault();
+								loading = true;
 								try {
 									await createUserWithEmailAndPassword(auth, email, password);
 									success('Account created successfully');
+									loading = false;
 									goto('/');
 								} catch (error) {
+									loading = false;
 									const errorMessage = getFirebaseErrorMessage(error.code);
 									failure(errorMessage);
 								}
-							}}>Register</Button
+							}}
 						>
+							{#if loading}
+								<Loader />
+							{:else}
+								Register
+							{/if}
+						</Button>
 
 						<div>or</div>
 
@@ -106,7 +117,7 @@
 					<div>already have an account?</div>
 					<button
 						type="button"
-						class="text-secondary-500 w-36"
+						class="w-36 text-secondary-500"
 						on:click={() => {
 							goto('/auth/login');
 						}}
