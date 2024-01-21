@@ -1,5 +1,6 @@
 <script lang="ts">
-	import { Cog, LogOut } from 'lucide-svelte';
+	import { sync } from '@/helpers/tools';
+	import { Cog, LogOut, RefreshCcw } from 'lucide-svelte';
 	import { SignedIn } from 'sveltefire';
 	export let displayName: string | null | undefined;
 	export let userImageUrl: string | null | undefined;
@@ -18,6 +19,14 @@
 			<div class="user-name font-semibold">{displayName}</div>
 		</div>
 		<div class="actions flex items-center gap-5">
+			<button
+				on:click={() => {
+					sync();
+				}}
+				class="text-primary-500 hover:text-primary-600"
+			>
+				<RefreshCcw size="2em" />
+			</button>
 			<a href="/settings" class="text-primary-500 hover:text-primary-600">
 				<Cog size="2em" />
 			</a>

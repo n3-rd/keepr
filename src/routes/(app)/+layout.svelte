@@ -12,7 +12,8 @@
 	import { getAuth, updateProfile } from 'firebase/auth';
 	import { failure, success } from '@/helpers/Toast';
 	import Header from '@/components/Header.svelte';
-	import { syncArticlesFromFirestore, syncArticlesToFirestore } from '@/helpers/tools';
+	import { sync, syncArticlesFromFirestore, syncArticlesToFirestore } from '@/helpers/tools';
+	import { onMount } from 'svelte';
 	const fireAuth = getAuth();
 
 	const { auth, firestore, storage, rtdb, analytics } = getFirebaseContext();
@@ -43,9 +44,12 @@
 	};
 
 	setInterval(() => {
-		syncArticlesToFirestore();
-		syncArticlesFromFirestore();
-	}, 1000);
+		sync();
+	}, 10000);
+
+	onMount(() => {
+		sync();
+	});
 </script>
 
 <svelte:head>

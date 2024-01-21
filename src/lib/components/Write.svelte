@@ -92,6 +92,7 @@
 					title = '';
 					text = '';
 				}}
+				disabled={title === '' || text === ''}
 				>Save
 				<Send class="ml-2 inline" />
 			</Button>

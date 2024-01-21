@@ -3,6 +3,7 @@ import { getFirestore, doc, setDoc, getDoc  } from "firebase/firestore";
 
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "@/firebase";
+import { failure } from "./Toast";
 
 /**
  * initialize firebase
@@ -42,15 +43,26 @@ export const saveCurrentArticleToLocalStorage = (article: article) => {
     localStorage.setItem("n3rd.diary.currentArticle", JSON.stringify(article));
     }
 }
+export const emptyCurrentArticleFromLocalStorage = () => {
+    if(browser) {
+    localStorage.removeItem("n3rd.diary.currentArticle");
+    }
+}
 
 export const saveArticleToLocalStorage = (article: article) => {
     if(browser) {
+        if(article.content.length > 0 && article.title.length > 0) {
     const articles = getArticlesFromLocalStorage();
     articles.push(article);
     localStorage.setItem("n3rd.diary.articles", JSON.stringify(articles));
-    }
     syncArticlesToFirestore();
-    
+    emptyCurrentArticleFromLocalStorage();
+        }
+        else{
+            failure('Please fill in all fields')
+        }
+}
+
 }
 
 /**
@@ -86,3 +98,13 @@ export const syncArticlesFromFirestore = async () => {
         console.log("No such document!");
     }
 }
+
+
+export const sync = async () => {
+    try {
+        await syncArticlesFromFirestore();
+        await syncArticlesToFirestore();
+    } catch (error) {
+    failure('Error syncing articles, check your internet connection');
+    }
+};
