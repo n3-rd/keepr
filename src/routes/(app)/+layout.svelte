@@ -76,11 +76,6 @@
 		<slot />
 	</div>
 </SignedIn>
-
-<SignedIn let:signOut>
-	<button on:click={signOut}>Sign Out</button>
-</SignedIn>
-
 <SignedOut>
 	{#if browser}
 		{goto('/auth/login')}
