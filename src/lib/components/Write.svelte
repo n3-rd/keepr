@@ -83,7 +83,6 @@
 				<md-mention><AtSign class="inline cursor-pointer" /></md-mention>
 				<md-ref><Hash class="inline cursor-pointer" /></md-ref>
 				<md-strikethrough><Strikethrough class="inline cursor-pointer" /></md-strikethrough>
-				<button data-md-button>Custom button</button>
 			</markdown-toolbar>
 
 			<Button

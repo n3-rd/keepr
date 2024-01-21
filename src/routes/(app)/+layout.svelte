@@ -12,7 +12,7 @@
 	import { getAuth, updateProfile } from 'firebase/auth';
 	import { failure, success } from '@/helpers/Toast';
 	import Header from '@/components/Header.svelte';
-	import { syncArticlesToFirestore } from '@/helpers/tools';
+	import { syncArticlesFromFirestore, syncArticlesToFirestore } from '@/helpers/tools';
 	const fireAuth = getAuth();
 
 	const { auth, firestore, storage, rtdb, analytics } = getFirebaseContext();
@@ -44,6 +44,7 @@
 
 	setInterval(() => {
 		syncArticlesToFirestore();
+		syncArticlesFromFirestore();
 	}, 1000);
 </script>
 

@@ -1,5 +1,5 @@
 import { browser } from "$app/environment";
-import { getFirestore, doc, setDoc  } from "firebase/firestore";
+import { getFirestore, doc, setDoc, getDoc  } from "firebase/firestore";
 
 import { initializeApp } from "firebase/app";
 import { firebaseConfig } from "@/firebase";
@@ -50,6 +50,7 @@ export const saveArticleToLocalStorage = (article: article) => {
     localStorage.setItem("n3rd.diary.articles", JSON.stringify(articles));
     }
     syncArticlesToFirestore();
+    
 }
 
 /**
@@ -72,4 +73,16 @@ export const syncArticlesToFirestore = async () => {
     const articles = getArticlesFromLocalStorage();
     const docRef = doc(db, "articles", "articles");
     await setDoc(docRef, {articles});
+}
+
+export const syncArticlesFromFirestore = async () => {
+    const docRef = doc(db, "articles", "articles");
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+        const articles = docSnap.data().articles;
+        localStorage.setItem("n3rd.diary.articles", JSON.stringify(articles));
+    } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+    }
 }
