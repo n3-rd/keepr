@@ -1,6 +1,21 @@
 import { browser } from "$app/environment";
+import { getFirestore, doc, setDoc  } from "firebase/firestore";
+
+import { initializeApp } from "firebase/app";
+import { firebaseConfig } from "@/firebase";
+
+/**
+ * initialize firebase
+ */
+export const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
 
 
+
+
+/**
+ * date type, used for article list
+ */
 export type date = {
     day: number;
     month: number;
@@ -34,6 +49,7 @@ export const saveArticleToLocalStorage = (article: article) => {
     articles.push(article);
     localStorage.setItem("n3rd.diary.articles", JSON.stringify(articles));
     }
+    syncArticlesToFirestore();
 }
 
 /**
@@ -50,4 +66,10 @@ export const getArticlesFromLocalStorage = () => {
 export const determineNextID = () => {
     const articles = getArticlesFromLocalStorage();
     return articles.length + 1;
+}
+
+export const syncArticlesToFirestore = async () => {
+    const articles = getArticlesFromLocalStorage();
+    const docRef = doc(db, "articles", "articles");
+    await setDoc(docRef, {articles});
 }
